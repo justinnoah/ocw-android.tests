@@ -111,6 +111,31 @@ public class DataBaseHandlerTest extends AndroidTestCase {
 		assertEquals(speaker.getBlog(),speaker2.getBlog());
 	}
 	
+	public void testNumRows(){
+		
+		assertEquals(db.numRows("SCHEDULE"),1l);
+		assertEquals(db.numRows("SPEAKERS"),1l);
+	}
+	
+	public void testExists(){
+		
+		assertEquals(db.existsEvent("6"), 1);
+		assertEquals(db.existsEvent("1"), 0);
+		assertEquals(db.existsSpeaker("6"), 1);
+		assertEquals(db.existsSpeaker("1"), 0);
+		
+	}
+	
+	public void arrayToString(){
+		
+		String[] str = new String[] {"hello", "world", "while", "testing"};
+		String cnv = db.convertArrayToString(str);
+		String[] cnvstr = db.convertStringToArray(cnv);
+		
+		assertEquals(str,cnvstr);
+		
+	}
+	
 	
 	public void tearDown() throws Exception {
 		db.close();
