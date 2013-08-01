@@ -53,7 +53,8 @@ public class DataBaseHandlerTest extends AndroidTestCase {
 	}
 	
 	public void testAddScheduleEntry() {
-		Event event = new Event(event_id, event_title, start_time, end_time, description, room_title, track_id, speaker_ids, presenter);
+		Event event = new Event(event_id, event_title, start_time, end_time, description, 
+				room_title, track_id, speaker_ids, presenter);
 		db.addScheduleRow(event);
 		Event event2 = db.getScheduleRow(""+event_id);
 		
@@ -70,7 +71,8 @@ public class DataBaseHandlerTest extends AndroidTestCase {
 	}
 	
 	public void testUpdateScheduleEntry(){
-		Event event = new Event(event_id, updatedTitle, start_time, end_time, description, room_title, track_id, speaker_ids, presenter);
+		Event event = new Event(event_id, updatedTitle, start_time, end_time, description,
+				room_title, track_id, speaker_ids, presenter);
 		db.updateScheduleRow(event);
 		Event event2 = db.getScheduleRow(""+event_id);
 		
@@ -87,7 +89,8 @@ public class DataBaseHandlerTest extends AndroidTestCase {
 	}
 	
 	public void testAddSpeakerEntry(){
-		Speaker speaker = new Speaker(speaker_id, fullname, biography, affiliation, twitter, email, website, blog, linkedin);
+		Speaker speaker = new Speaker(speaker_id, fullname, biography, affiliation, twitter,
+				email, website, blog, linkedin);
 		db.addSpeakersRow(speaker);
 		Speaker speaker2 = db.getSpeakersRow(""+speaker_id);
 		
@@ -104,7 +107,8 @@ public class DataBaseHandlerTest extends AndroidTestCase {
 	}
 	
 	public void testUpdateSpeakerEntry(){
-		Speaker speaker = new Speaker(speaker_id, updated_fullname, biography, affiliation, twitter, email, website, blog, linkedin);
+		Speaker speaker = new Speaker(speaker_id, updated_fullname, biography, affiliation,
+				twitter, email, website, blog, linkedin);
 		db.updateSpeakersRow(speaker);
 		Speaker speaker2 = db.getSpeakersRow(""+speaker_id);
 		
