@@ -23,7 +23,7 @@ public class DataBaseHandlerTest extends AndroidTestCase {
 	private static final String updatedTitle = "Updated Event Title";
 	private static final String room_title = "Room Name";
 	private static final int track_id = 5;
-	private static final String[] speaker_ids = {"3"};
+	private static final String[] speaker_ids = {"3","4"};
 	private static final String presenter = "Mr. Presenter";
 	
 	//Speaker variables
@@ -66,6 +66,7 @@ public class DataBaseHandlerTest extends AndroidTestCase {
 		assertEquals(event.getRoom_title(), event2.getRoom_title());
 		assertEquals(event.getTrack_id(), event2.getTrack_id());
 		assertEquals(event.getSpeaker_ids()[0], event2.getSpeaker_ids()[0]);
+		assertEquals(event.getSpeaker_ids()[1], event2.getSpeaker_ids()[1]);
 		assertEquals(event.getPresenter(), event2.getPresenter());
 		
 	}
@@ -84,6 +85,7 @@ public class DataBaseHandlerTest extends AndroidTestCase {
 		assertEquals(event.getRoom_title(), event2.getRoom_title());
 		assertEquals(event.getTrack_id(), event2.getTrack_id());
 		assertEquals(event.getSpeaker_ids()[0], event2.getSpeaker_ids()[0]);
+		assertEquals(event.getSpeaker_ids()[1], event2.getSpeaker_ids()[1]);
 		assertEquals(event.getPresenter(), event2.getPresenter());
 		
 	}
@@ -145,6 +147,35 @@ public class DataBaseHandlerTest extends AndroidTestCase {
 		assertEquals(track.getColor_text(), track_2.getColor_text());
 	}
 	
+	
+	public void testStatusTable(){
+		
+		
+		Long scheduleUpdated = System.currentTimeMillis();
+		Long speakersUpdated = System.currentTimeMillis();
+		Long tracksUpdated = System.currentTimeMillis();
+		
+		db.initStatusTable("schedule", ""+scheduleUpdated);
+		db.initStatusTable("speakers", ""+speakersUpdated);
+		db.initStatusTable("tracks", ""+tracksUpdated);
+			
+		assertEquals(db.getTableUpdated("schedule"), scheduleUpdated);
+		assertEquals(db.getTableUpdated("speakers"), speakersUpdated);
+		assertEquals(db.getTableUpdated("tracks"), tracksUpdated);
+		
+		scheduleUpdated = System.currentTimeMillis();
+		speakersUpdated = System.currentTimeMillis();
+		tracksUpdated = System.currentTimeMillis();
+		
+		db.tableUpdated("schedule", ""+scheduleUpdated);
+		db.tableUpdated("speakers", ""+speakersUpdated);
+		db.tableUpdated("tracks", ""+tracksUpdated);
+		
+		assertEquals(db.getTableUpdated("schedule"), scheduleUpdated);
+		assertEquals(db.getTableUpdated("speakers"), speakersUpdated);
+		assertEquals(db.getTableUpdated("tracks"), tracksUpdated);
+	}
+	
 	public void testNumRows(){
 		
 		assertEquals(db.numRows("SCHEDULE"),1l);
@@ -172,6 +203,8 @@ public class DataBaseHandlerTest extends AndroidTestCase {
 		assertEquals(str,cnvstr);
 		
 	}
+	
+	
 	
 	
 	public void tearDown() throws Exception {
