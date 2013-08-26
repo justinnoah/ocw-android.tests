@@ -174,6 +174,13 @@ public class DataBaseHandlerTest extends AndroidTestCase {
 		assertEquals(db.getTableUpdated("schedule"), scheduleUpdated);
 		assertEquals(db.getTableUpdated("speakers"), speakersUpdated);
 		assertEquals(db.getTableUpdated("tracks"), tracksUpdated);
+		
+		int e = db.existsStatusRow("schedule");
+		assertEquals(e,1);
+		e = db.existsStatusRow("speakers");
+		assertEquals(e,1);
+		e = db.existsStatusRow("tracks");
+		assertEquals(e,1);
 	}
 	
 	public void testNumRows(){
