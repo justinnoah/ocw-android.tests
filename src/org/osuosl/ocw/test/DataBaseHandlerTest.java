@@ -1,5 +1,6 @@
 package org.osuosl.ocw.test;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 import org.osuosl.ocw.DataBaseHandler;
@@ -7,8 +8,10 @@ import org.osuosl.ocw.Event;
 import org.osuosl.ocw.Speaker;
 import org.osuosl.ocw.Track;
 
+import android.graphics.Color;
 import android.test.AndroidTestCase;
 import android.test.RenamingDelegatingContext;
+import android.util.Log;
 
 public class DataBaseHandlerTest extends AndroidTestCase {
 	
@@ -20,16 +23,14 @@ public class DataBaseHandlerTest extends AndroidTestCase {
 	private static final Date start_time = new Date(); 
 	private static final Date end_time = new Date();
 	private static final String description = "";
-	private static final String updatedTitle = "Updated Event Title";
 	private static final String room_title = "Room Name";
-	private static final int track_id = 5;
+	private static final String track_id = "5";
 	private static final String[] speaker_ids = {"3","4"};
 	private static final String presenter = "Mr. Presenter";
 	
 	//Speaker variables
-	private static final int speaker_id = 6;
+	private static final String speaker_id = "6";
 	private static final String fullname = "Mr. Test";
-	private static final String updated_fullname = "Mr. M Test";
 	private static final String biography = "Spend his time testing";
 	private static final String affiliation = "testing inc.";
 	private static final String twitter = "tester";
@@ -40,9 +41,8 @@ public class DataBaseHandlerTest extends AndroidTestCase {
 	
 	//Track variables
 	private static final String track_title = "Test track";
-	private static final String updated_track_title = "Updated Test track";
-	private static final String color = "red";
-	private static final String color_text = "black";
+	private static final int color = Color.parseColor("red");
+	private static final int color_text = Color.parseColor("black");
 	
 	public void setUp() throws Exception{
 		super.setUp();
@@ -55,8 +55,11 @@ public class DataBaseHandlerTest extends AndroidTestCase {
 	public void testAddScheduleEntry() {
 		Event event = new Event(event_id, event_title, start_time, end_time, description, 
 				room_title, track_id, speaker_ids, presenter);
-		db.addScheduleRow(event);
-		Event event2 = db.getScheduleRow(""+event_id);
+		ArrayList<Event> events = new ArrayList<Event>();
+		events.add(event);
+		
+		db.addEvents(events);
+		Event event2 = db.getScheduleRow("1");
 		
 		assertEquals(event.getEvent_id(), event2.getEvent_id());
 		assertEquals(event.getEvent_title(), event2.getEvent_title());
@@ -71,30 +74,16 @@ public class DataBaseHandlerTest extends AndroidTestCase {
 		
 	}
 	
-	public void testUpdateScheduleEntry(){
-		Event event = new Event(event_id, updatedTitle, start_time, end_time, description,
-				room_title, track_id, speaker_ids, presenter);
-		db.updateScheduleRow(event);
-		Event event2 = db.getScheduleRow(""+event_id);
-		
-		assertEquals(event.getEvent_id(), event2.getEvent_id());
-		assertEquals(event.getEvent_title(), event2.getEvent_title());
-//		assertEquals(event.getStart_time().getTime(), event2.getStart_time().getTime());   //fails
-//		assertEquals(event.getEnd_time().getTime(), event2.getEnd_time().getTime());       //fails
-		assertEquals(event.getDescription(), event2.getDescription());
-		assertEquals(event.getRoom_title(), event2.getRoom_title());
-		assertEquals(event.getTrack_id(), event2.getTrack_id());
-		assertEquals(event.getSpeaker_ids()[0], event2.getSpeaker_ids()[0]);
-		assertEquals(event.getSpeaker_ids()[1], event2.getSpeaker_ids()[1]);
-		assertEquals(event.getPresenter(), event2.getPresenter());
-		
-	}
 	
 	public void testAddSpeakerEntry(){
 		Speaker speaker = new Speaker(speaker_id, fullname, biography, affiliation, twitter,
 				email, website, blog, linkedin);
-		db.addSpeakersRow(speaker);
-		Speaker speaker2 = db.getSpeakersRow(""+speaker_id);
+		
+		ArrayList<Speaker> speakers = new ArrayList<Speaker>();
+		speakers.add(speaker);
+		
+		db.addSpeakers(speakers);
+		Speaker speaker2 = db.getSpeakersRow("1");
 		
 		assertEquals(speaker.getSpeaker_id(),speaker2.getSpeaker_id());
 		assertEquals(speaker.getFullname(),speaker2.getFullname());
@@ -108,27 +97,16 @@ public class DataBaseHandlerTest extends AndroidTestCase {
 		
 	}
 	
-	public void testUpdateSpeakerEntry(){
-		Speaker speaker = new Speaker(speaker_id, updated_fullname, biography, affiliation,
-				twitter, email, website, blog, linkedin);
-		db.updateSpeakersRow(speaker);
-		Speaker speaker2 = db.getSpeakersRow(""+speaker_id);
-		
-		assertEquals(speaker.getSpeaker_id(),speaker2.getSpeaker_id());
-		assertEquals(speaker.getFullname(),speaker2.getFullname());
-		assertEquals(speaker.getBiography(),speaker2.getBiography());
-		assertEquals(speaker.getAffiliation(),speaker2.getAffiliation());
-		assertEquals(speaker.getTwitter(),speaker2.getTwitter());
-		assertEquals(speaker.getEmail(),speaker2.getEmail());
-		assertEquals(speaker.getWebsite(),speaker2.getWebsite());
-		assertEquals(speaker.getBlog(),speaker2.getBlog());
-		assertEquals(speaker.getLinkedin(),speaker2.getLinkedin());
-	}
+	
 	
 	public void testAddtrackEntry(){
 		Track track = new Track(track_id, track_title, color, color_text);
-		db.addTrackRow(track);
-		Track track_2 = db.getTracksRow(""+track_id);
+		
+		ArrayList<Track> tracks = new ArrayList<Track>();
+		tracks.add(track);
+		
+		db.addTracks(tracks);
+		Track track_2 = db.getTracksRow("1");
 		
 		assertEquals(track.getTrack_id(), track_2.getTrack_id());
 		assertEquals(track.getTrack_title(), track_2.getTrack_title());
@@ -136,16 +114,6 @@ public class DataBaseHandlerTest extends AndroidTestCase {
 		assertEquals(track.getColor_text(), track_2.getColor_text());
 	}
 	
-	public void testUpdateTrackEntry(){
-		Track track =  new Track(track_id, updated_track_title, color, color_text);
-		db.updateTracksRow(track);
-		Track track_2 = db.getTracksRow(""+track_id);
-		
-		assertEquals(track.getTrack_id(), track_2.getTrack_id());
-		assertEquals(track.getTrack_title(), track_2.getTrack_title());
-		assertEquals(track.getColor(), track_2.getColor());
-		assertEquals(track.getColor_text(), track_2.getColor_text());
-	}
 	
 	
 	public void testStatusTable(){
@@ -155,25 +123,25 @@ public class DataBaseHandlerTest extends AndroidTestCase {
 		Long speakersUpdated = System.currentTimeMillis();
 		Long tracksUpdated = System.currentTimeMillis();
 		
-		db.initStatusTable("schedule", ""+scheduleUpdated);
-		db.initStatusTable("speakers", ""+speakersUpdated);
-		db.initStatusTable("tracks", ""+tracksUpdated);
+		db.addStatusRow("schedule", ""+scheduleUpdated);
+		db.addStatusRow("speakers", ""+speakersUpdated);
+		db.addStatusRow("tracks", ""+tracksUpdated);
 			
-		assertEquals(db.getTableUpdated("schedule"), scheduleUpdated);
-		assertEquals(db.getTableUpdated("speakers"), speakersUpdated);
-		assertEquals(db.getTableUpdated("tracks"), tracksUpdated);
+		assertEquals(db.getStatusRow("schedule"), scheduleUpdated);
+		assertEquals(db.getStatusRow("speakers"), speakersUpdated);
+		assertEquals(db.getStatusRow("tracks"), tracksUpdated);
 		
 		scheduleUpdated = System.currentTimeMillis();
 		speakersUpdated = System.currentTimeMillis();
 		tracksUpdated = System.currentTimeMillis();
 		
-		db.tableUpdated("schedule", ""+scheduleUpdated);
-		db.tableUpdated("speakers", ""+speakersUpdated);
-		db.tableUpdated("tracks", ""+tracksUpdated);
+		db.updateStatusRow("schedule", ""+scheduleUpdated);
+		db.updateStatusRow("speakers", ""+speakersUpdated);
+		db.updateStatusRow("tracks", ""+tracksUpdated);
 		
-		assertEquals(db.getTableUpdated("schedule"), scheduleUpdated);
-		assertEquals(db.getTableUpdated("speakers"), speakersUpdated);
-		assertEquals(db.getTableUpdated("tracks"), tracksUpdated);
+		assertEquals(db.getStatusRow("schedule"), scheduleUpdated);
+		assertEquals(db.getStatusRow("speakers"), speakersUpdated);
+		assertEquals(db.getStatusRow("tracks"), tracksUpdated);
 		
 		int e = db.existsStatusRow("schedule");
 		assertEquals(e,1);
